@@ -161,7 +161,7 @@ const Shop = () => {
                           }}
                       >
                           {category.name}
-                      </a>
+                      </button>
                   </li>
               ))}
 						</ul>
@@ -181,7 +181,7 @@ const Shop = () => {
                           }}
                       >
                           {tag.name}
-                      </a>
+                      </button>
                   </li>
               ))}
 						</ul>
