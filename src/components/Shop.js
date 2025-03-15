@@ -153,7 +153,7 @@ const Shop = () => {
 							 {categories.map(category => (
                   <li key={category.id}>
                       <a
-                          href="#!"
+                          
                           onClick={() => handleCategoryClick(category.id)}
                           style={{
                               color: selectedCategories.includes(category.id) ? "blue" : "black",
@@ -173,7 +173,7 @@ const Shop = () => {
 							{tags.map(tag => (
                   <li key={tag.id}>
                       <a
-                          href="#!"
+                          
                           onClick={() => handleTagClick(tag.id)}
                           style={{
                               color: selectedTags.includes(tag.id) ? "blue" : "black",
