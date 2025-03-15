@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+React Frontend - Remarcable Shop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Project Overview
 
-## Available Scripts
+This is the frontend for the Remarcable project, built with React. It provides an interactive UI to browse products, search by description, and filter by category and tags.
 
-In the project directory, you can run:
+Features
 
-### `npm start`
+Fetches products, categories, and tags from Django API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Search functionality using user input.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Dynamic filtering of products.
 
-### `npm test`
+Responsive design.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Deployed on Netlify.
 
-### `npm run build`
+Installation & Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Ensure you have the following installed:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Node.js (latest LTS version)
 
-### `npm run eject`
+npm or yarn
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Clone the Repository
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+git clone https://github.com/Luis2387/remarcable_front_app
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3Install Dependencies
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm install  # or yarn install
 
-## Learn More
+Configure API Base URL
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Edit src/api.js and update:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const API_BASE_URL = "https://your-backend-url.com/api";
+for this project is: https://remarcable-back-app.onrender.com/api
 
-### Code Splitting
+Run the Development Server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+npm start  # or yarn start
 
-### Analyzing the Bundle Size
+The app will be available at: http://localhost:3000/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Build & Deployment
 
-### Making a Progressive Web App
+Netlify Deployment Steps
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Push changes to GitHub.
 
-### Advanced Configuration
+Connect Netlify to the repository.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Configure Build Command:
 
-### Deployment
+npm run build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Set Publish Directory to build/
 
-### `npm run build` fails to minify
+Deploy the site.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+Assumptions & Notes
+
+No pagination due to small dataset; can be added if scaling.
+
+Uses useEffect for API calls and useState for managing UI state.
