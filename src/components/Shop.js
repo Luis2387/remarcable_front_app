@@ -111,9 +111,9 @@ const Shop = () => {
 					{products.map((product) => (
 					<div key={product.id} class="col-lg-4 col-md-4 col-sm-6 col-xs-12 wow fadeInUp2" data-wow-delay=".2s">
 						<div class="product_card text-center">
-							<a class="item_image" target="_blank" href="#">
+							<button class="item_image" target="_blank">
 								<img src="assets/images/shop/img_09.jpg" alt={product.name}/>
-							</a>
+							</button>
 							<div class="item_content">
 								<h3 class="item_title">{product.name}</h3>
 								<span class="item_price">$ {product.price}</span>
