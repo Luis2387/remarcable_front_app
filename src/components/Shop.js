@@ -2,7 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { fetchProducts, fetchCategories, fetchTags } from "../api";
 
 
-const Shop = () => {
+	const Shop = () => {
+
+	// We create useState variables to store the values that React should listen to in case they change.
+  // We will store the products, categories, and tags displayed on the page, 
+  // as well as the selected categories, selected tags, and text-based search queries.
+
 	const [products, setProducts] = useState([]);
 	const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
@@ -10,86 +15,130 @@ const Shop = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingSearch, setPendingSearch] = useState("");
-  const isFirstRender = useRef(true); 
+  
+  // This variable will act as a flag to determine whether this is the first time the page loads.
+  // This prevents redundant API calls since loadInitialData will have already fetched the necessary data.
+  const isFirstFilterRender = useRef(true);
 
 
-    useEffect(() => {
-        const loadInitialData = async () => {
-            try {
-                const [productsData, categoriesData, tagsData] = await Promise.all([
-                    fetchProducts(),
-                    fetchCategories(),
-                    fetchTags(),
-                ]);
-                setProducts(productsData);
-                setCategories(categoriesData);
-                setTags(tagsData);
-            } catch (error) {
-                console.error("Error fetching initial data", error);
-            }
-        };
-
-        if (isFirstRender.current) {
-            loadInitialData();
-            isFirstRender.current = false;
-        }
-    }, []);
+  // loadInitialData is responsible for fetching all categories, tags, and products 
+  // because this is a full catalog load. 
+  // We use Promise.all to fetch all three resources simultaneously. 
+  // The retrieved data is stored in support variables: productsData, categoriesData, and tagsData.
+  // Finally, we use the set functions to save the information into their respective lists.
 
 
+  useEffect(() => {
+      const loadInitialData = async () => {
+          try {
+              const [productsData, categoriesData, tagsData] = await Promise.all([
+                  fetchProducts(),
+                  fetchCategories(),
+                  fetchTags(),
+              ]);
+              setProducts(productsData);
+              setCategories(categoriesData);
+              setTags(tagsData);
+          } catch (error) {
+              console.error("Error fetching initial data", error);
+          }
+      };
 
-    useEffect(() => {
-        if (selectedCategories.length === 0 && selectedTags.length === 0 && searchQuery === "") {
-            return;
-        }
-
-        const applyFilters = async () => {
-            const filters = {
-                category: selectedCategories.length > 0 ? selectedCategories : null,
-                tags: selectedTags.length > 0 ? selectedTags : null,
-                q: searchQuery || null,
-            };
-
-            try {
-                const filteredProducts = await fetchProducts(filters);
-                setProducts(filteredProducts);
-            } catch (error) {
-                console.error("Error applying filters:", error);
-            }
-        };
-
-        applyFilters();
-    }, [selectedCategories, selectedTags, searchQuery]);
+      loadInitialData();
+  }, []);
 
 
 
-    const handleCategoryClick = (categoryId) => {
-        setSelectedCategories((prevCategories) =>
-            prevCategories.includes(categoryId)
-                ? prevCategories.filter((id) => id !== categoryId)
-                : [...prevCategories, categoryId]
-        );
-    };
+  // This second useEffect listens for changes in selectedCategories, selectedTags, or searchQuery.
+  // If any of these values change, the effect will be triggered.
+  // We prevent it from executing on the initial page render using isFirstFilterRender 
+  // to avoid duplicate API calls.
 
-    const handleTagClick = (tagId) => {
-        setSelectedTags((prevTags) =>
-            prevTags.includes(tagId)
-                ? prevTags.filter((id) => id !== tagId)
-                : [...prevTags, tagId]
-        );
-    };
+  useEffect(() => {
 
+  if (isFirstFilterRender.current) {
+      isFirstFilterRender.current = false;
+      return; 
+  }
 
-    const handleSearchChange = (event) => {
-        setPendingSearch(event.target.value);
-    };
+  const applyFilters = async () => {
+  		
+  		// If selectedCategories, selectedTags, and searchQuery are empty, 
+      // it means all filters have been removed, 
+      // so we need to fetch all products again.
 
 
-    const handleSearchSubmit = (event) => {
-        event.preventDefault();
-        setSearchQuery(pendingSearch);
-    };
+      if (selectedCategories.length === 0 && selectedTags.length === 0 && searchQuery === "") {
+     			const allProducts = await fetchProducts();
+          setProducts(allProducts);
+          return;
+     
+      }
 
-  return (
+      // We create a filters object that stores categories, tags, and text search queries, if applicable.
+
+      const filters = {
+          category: selectedCategories.length > 0 ? selectedCategories : null,
+          tags: selectedTags.length > 0 ? selectedTags : null,
+          q: searchQuery || null,
+      };
+
+      try {		
+      				// We send the constructed filters object to fetchProducts, 
+              // which returns filteredProducts, the updated product list. 
+              // We then update the products state with setProducts.
+
+              const filteredProducts = await fetchProducts(filters);
+              setProducts(filteredProducts);
+          } catch (error) {
+              console.error("Error applying filters:", error);
+          } 
+  };
+
+  applyFilters();
+
+	}, [selectedCategories, selectedTags, searchQuery]);
+
+
+  // Function to handle category selection. If the category is already selected, remove it. 
+  // Otherwise, add it to the list of selected categories.
+
+  const handleCategoryClick = (categoryId) => {
+      setSelectedCategories((prevCategories) =>
+          prevCategories.includes(categoryId)
+              ? prevCategories.filter((id) => id !== categoryId)
+              : [...prevCategories, categoryId]
+      );
+  };
+
+
+  // Function to handle tag selection. If the tag is already selected, remove it. 
+  // Otherwise, add it to the list of selected tags.
+
+
+  const handleTagClick = (tagId) => {
+      setSelectedTags((prevTags) =>
+          prevTags.includes(tagId)
+              ? prevTags.filter((id) => id !== tagId)
+              : [...prevTags, tagId]
+      );
+  };
+
+  // Function to update the search input as the user types.
+
+  const handleSearchChange = (event) => {
+      setPendingSearch(event.target.value);
+  };
+
+
+   // Function to submit the search query. Updates searchQuery with the pending search term.
+
+  const handleSearchSubmit = (event) => {
+      event.preventDefault();
+      setSearchQuery(pendingSearch);
+  };
+
+return (
 
 <section class="shop_section sec_ptb_130 bg_gray clearfix">
 	<div class="container">
