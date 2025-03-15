@@ -152,7 +152,7 @@ const Shop = () => {
 						<ul class="ul_li_block clearfix">
 							 {categories.map(category => (
                   <li key={category.id}>
-                      <a
+                      <button
                           
                           onClick={() => handleCategoryClick(category.id)}
                           style={{
@@ -172,7 +172,7 @@ const Shop = () => {
 						<ul class="ul_li clearfix">
 							{tags.map(tag => (
                   <li key={tag.id}>
-                      <a
+                      <button
                           
                           onClick={() => handleTagClick(tag.id)}
                           style={{
